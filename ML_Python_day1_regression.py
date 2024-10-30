@@ -73,7 +73,7 @@ models = [
     ('KN', KNeighborsRegressor()), 
     ('DTR', DecisionTreeRegressor(random_state=1)), 
     ('SVR', SVR(gamma='auto')),
-    ('RF', RandomForestRegressor(random_state=1))  # Adding Random Forest
+    ('RF', RandomForestRegressor(random_state=1))
 ]
 
 # Evaluate each model using 10-fold cross-validation
