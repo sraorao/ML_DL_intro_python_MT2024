@@ -10,7 +10,7 @@ Breast Cancer Wisconsin (Diagnostic) Data Set extracted from UCI Machine Learnin
 (https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic))
 """
 
-# 1. Import necessary libraries
+# 1. Import necessary libraries and setup working
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -23,6 +23,10 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, roc_curve, roc_auc_score
+
+import os
+print("Current Working Directory:", os.getcwd())
+os.chdir('ML_DL_intro_python_MT2024-main')
 
 # 2. Load the dataset
 url = "https://raw.githubusercontent.com/selva86/datasets/master/BreastCancer.csv"
@@ -44,7 +48,7 @@ X_imputed = pd.DataFrame(imputer.fit_transform(X), columns=X.columns)
 X_train, X_test, y_train, y_test = train_test_split(X_imputed, y, test_size=0.3, random_state=1, stratify=y)
 
 # 4. Optional example of feature selection using SelectKBest with chi-square
-select_k_best = SelectKBest(chi2, k='all')  # Use 'all' to select all features
+select_k_best = SelectKBest(chi2, k='all')  # We will just use 'all' to select all features
 X_train_kbest = select_k_best.fit_transform(X_train, y_train)
 X_test_kbest = select_k_best.transform(X_test)
 print("Selected features using SelectKBest:", X.columns[select_k_best.get_support(indices=True)])
@@ -132,3 +136,8 @@ plt.ylabel('Coefficient Value')
 plt.show()
 #Note: try it yourself - choose only important features using the feature selection above
 #Rerun the predictions again - how did the reduction in number of features affected predictions?
+
+# 9. Export the trained model
+import joblib
+joblib.dump(best_model, 'best_model.joblib')
+print("Model exported as 'best_model.joblib'")
