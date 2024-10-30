@@ -24,7 +24,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 # 2. Set working directory and load the dataset
-os.chdir('/Users/irina/Downloads/ML_Python_course_MSD/ML_Python_MT2024')
+os.chdir('/Downloads/ML_DL_intro_python_MT2024-main')
 df = pd.read_csv('owid_covid_for_ML_short.csv')
 
 # 3. Log-transform numeric features to reduce skewness and stabilize variance
