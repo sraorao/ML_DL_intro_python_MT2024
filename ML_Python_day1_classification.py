@@ -21,7 +21,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
-from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, roc_curve, roc_auc_score
 
 import os
@@ -69,8 +69,7 @@ models = [
     ('KNN', KNeighborsClassifier()), 
     ('DTC', DecisionTreeClassifier(random_state=1)), 
     ('SVM', SVC(gamma='auto', probability=True)),
-    ('RF', RandomForestClassifier(random_state=1)),
-    ('GB', GradientBoostingClassifier(random_state=1))
+    ('RF', RandomForestClassifier(random_state=1))
 ]
 
 # Evaluate each model using 10-fold cross-validation
@@ -87,7 +86,7 @@ for name, model in models:
     print(f'{name}: Mean Accuracy = {cv_results.mean():.4f} (Std = {cv_results.std():.4f})')
 
 # Plot the comparison of model performance
-plt.boxplot(results, labels=names)
+plt.boxplot(results, tick_labels=names)
 plt.title('Algorithm Comparison')
 plt.ylabel('Accuracy Score')
 plt.show()
