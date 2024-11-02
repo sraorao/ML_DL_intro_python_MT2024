@@ -12,10 +12,11 @@ Breast Cancer Wisconsin (Diagnostic) Data Set extracted from UCI Machine Learnin
 
 # 1. Import necessary libraries and setup working
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.model_selection import train_test_split, cross_val_score, KFold
-from sklearn.feature_selection import SelectKBest, chi2, RFE
+from sklearn.feature_selection import SelectKBest, f_classif, RFE
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
@@ -28,18 +29,33 @@ import os
 print("Current Working Directory:", os.getcwd())
 os.chdir('ML_DL_intro_python_MT2024-main')
 
-# 2. Load the dataset
+# 2. Load, explore and prepare the dataset
 url = "https://raw.githubusercontent.com/selva86/datasets/master/BreastCancer.csv"
 df = pd.read_csv(url)
-
-# Display the first few rows of the dataset
-print(df.head())
+print("Total data points",df.shape[0])
+print("Total number of features(as number of columns) are ", df.shape[1])
+df.describe()
+df.head()
 #Column Class contains the target variable - 0 (benign) and 1 (malignant)
+
+# Check skewness of the data
+skewness_before = df.select_dtypes(include=np.number).apply(lambda x: x.skew()).sort_values(ascending=False)
+print("Skewness before transformation:")
+print(skewness_before) #We don't include ID as it is categorical, so the rest is not too skewed
 
 # Define feature matrix X and target variable y
 X = df.drop(['Id', 'Class'], axis=1)  # Feature matrix without 'Id' and 'Class'
 y = df['Class']  # Target variable
+class_counts = df['Class'].value_counts() 
+print(class_counts) #We need to handle imbalanced classes
 
+#Check for null values
+null_values = df.isnull().values.any()
+if null_values == True:
+    print("There are some missing values in data")
+else:
+    print("There are no missing values in the dataset")
+    
 # Handle missing values using SimpleImputer
 imputer = SimpleImputer(strategy='mean')
 X_imputed = pd.DataFrame(imputer.fit_transform(X), columns=X.columns)
@@ -48,7 +64,7 @@ X_imputed = pd.DataFrame(imputer.fit_transform(X), columns=X.columns)
 X_train, X_test, y_train, y_test = train_test_split(X_imputed, y, test_size=0.3, random_state=1, stratify=y)
 
 # 4. Optional example of feature selection using SelectKBest with chi-square
-select_k_best = SelectKBest(chi2, k='all')  # We will just use 'all' to select all features
+select_k_best = SelectKBest(f_classif, k='all')  # We will just use 'all' to select all features
 X_train_kbest = select_k_best.fit_transform(X_train, y_train)
 X_test_kbest = select_k_best.transform(X_test)
 print("Selected features using SelectKBest:", X.columns[select_k_best.get_support(indices=True)])

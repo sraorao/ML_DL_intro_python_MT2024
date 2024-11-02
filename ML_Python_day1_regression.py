@@ -23,14 +23,35 @@ from sklearn.svm import SVR
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
-# 2. Set working directory and load the dataset
+# 2. Set working directory, load, explore and prepare the dataset
 os.chdir('/Users/irina/Downloads/ML_Python_course_MSD/ML_Python_MT2024')
 df = pd.read_csv('owid_covid_for_ML_short.csv')
+print("Total data points",df.shape[0])
+print("Total number of features(as number of columns) are ", df.shape[1])
+df.describe()
+df.head()
 
+# Check skewness of the data
+skewness_before = df.select_dtypes(include=np.number).apply(lambda x: x.skew()).sort_values(ascending=False)
+print("Skewness before transformation:")
+print(skewness_before)
+
+#Check for null values
+null_values = df.isnull().values.any()
+if null_values == True:
+    print("There are some missing values in data")
+else:
+    print("There are no missing values in the dataset")
+    
 # 3. Log-transform numeric features to reduce skewness and stabilize variance
 #Note: ignore non-numeric columns
 for column in df.select_dtypes(include=np.number).columns:
     df[column] = df[column].apply(lambda x: np.log10(x) if x > 0 else x)
+    
+# Check skewness after transformation
+skewness_after = df.select_dtypes(include=np.number).apply(lambda x: x.skew()).sort_values(ascending=False)
+print("\nSkewness after transformation:")
+print(skewness_after)
 
 # Define feature matrix X and target variable y
 X = df.drop("deaths_per_million", axis=1)  # Feature Matrix
