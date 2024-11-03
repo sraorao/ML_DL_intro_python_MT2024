@@ -13,6 +13,15 @@ You are expected to attend two half-day sessions:
 - **Monday, 04 November**: 09:30 - 13:00
 - **Wednesday, 06 November**: 09:30 - 13:00
 
+## Requirements
+- Python 3.8 or above
+- A Python IDE (Spyder, Jupyter, VS Code, or similar)
+- Python packages: `scikit-learn`, `pytorch`, `matplotlib`, `pandas`, `seaborn`, `opencv`, `pillow`
+- If you have conda/mamba installed, the easiest thing is to create a new environment with the provided yaml file:
+```
+conda env create -f deeplearning.yaml
+conda activate deeplearning
+```
 ## Course Objectives
 
 By the end of this course, you will learn:
@@ -54,6 +63,6 @@ The course is structured into two half-day sessions as follows:
 - Convolutional Neural Networks (CNNs) using `PyTorch`
 
 **Hands-on:**
-- Application of CNNs on an image classification problem (e.g., blood cell type classification).
+- Application of CNNs on an image classification problem (Acute Lymphoblastic Leukemia classification).
 - Model Evaluation
 - Using Pre-trained Models
